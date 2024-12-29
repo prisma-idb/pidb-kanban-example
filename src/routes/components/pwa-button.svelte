@@ -2,13 +2,15 @@
 	import { useRegisterSW } from 'virtual:pwa-register/svelte';
 	import { toast } from 'svelte-sonner';
 	import type { Writable } from 'svelte/store';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import { CloudIcon, CloudOffIcon } from 'lucide-svelte';
+	import { online } from 'svelte/reactivity/window';
 
 	let needRefresh: Writable<boolean>;
-	let offlineReady: Writable<boolean>;
 	let updateServiceWorker: () => void;
 
 	$effect(() => {
-		({ needRefresh, updateServiceWorker, offlineReady } = useRegisterSW({
+		({ needRefresh, updateServiceWorker } = useRegisterSW({
 			onRegistered(r) {
 				if (r) {
 					setInterval(() => {
@@ -25,12 +27,6 @@
 	});
 
 	$effect(() => {
-		if ($offlineReady) {
-			console.log('App is offline ready');
-		}
-	});
-
-	$effect(() => {
 		if ($needRefresh) {
 			toast('An update is available', {
 				action: { label: 'Update', onClick: () => updateServiceWorker() }
@@ -38,3 +34,13 @@
 		}
 	});
 </script>
+
+{#if online}
+	<Button variant="outline">
+		{#if online.current}
+			<CloudIcon />
+		{:else}
+			<CloudOffIcon />
+		{/if}
+	</Button>
+{/if}

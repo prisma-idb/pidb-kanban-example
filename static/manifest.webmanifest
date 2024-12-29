@@ -1,0 +1,9 @@
+{
+	"name": "Svelte Todo Example",
+	"short_name": "TodoApp",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#FFA500",
+	"icons": []
+}

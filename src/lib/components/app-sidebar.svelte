@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import PwaButton from '../../routes/components/pwa-button.svelte';
 	import Button from './ui/button/button.svelte';
 </script>
 
@@ -11,4 +12,7 @@
 		</Button>
 	</Sidebar.Header>
 	<Sidebar.Content />
+	<Sidebar.Footer>
+		<PwaButton />
+	</Sidebar.Footer>
 </Sidebar.Root>

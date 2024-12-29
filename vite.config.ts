@@ -16,11 +16,7 @@ export default defineConfig({
 				enabled: true,
 				type: 'module'
 			},
-			manifest: {
-				name: "Svelte Todo Example",
-				short_name: "Svelte Todo",
-				theme_color: "#FFA500",
-			}
+			manifestFilename: 'manifest.webmanifest'
 		})
 	]
 });
