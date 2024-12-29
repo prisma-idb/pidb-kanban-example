@@ -15,6 +15,11 @@ export default defineConfig({
 			devOptions: {
 				enabled: true,
 				type: 'module'
+			},
+			manifest: {
+				name: "Svelte Todo Example",
+				short_name: "Svelte Todo",
+				theme_color: "#FFA500",
 			}
 		})
 	]
