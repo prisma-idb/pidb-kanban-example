@@ -38,9 +38,9 @@
 {#if online}
 	<Button variant="outline">
 		{#if online.current}
-			<CloudIcon />
+			<CloudIcon /> Online
 		{:else}
-			<CloudOffIcon />
+			<CloudOffIcon /> Offline
 		{/if}
 	</Button>
 {/if}

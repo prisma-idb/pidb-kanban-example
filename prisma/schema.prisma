@@ -9,11 +9,11 @@ datasource db {
 
 generator prismaIDB {
   provider = "idb-client-generator"
-  output   = "./prisma-idb"
+  output   = "../src/lib/prisma-idb"
 }
 
 model Todo {
-  id        Int   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   title     String
   completed Boolean  @default(false)
   createdAt DateTime @default(now())
