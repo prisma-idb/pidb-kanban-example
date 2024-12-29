@@ -1,5 +1,6 @@
 <script lang="ts">
-	import ModeToggle from '$lib/components/mode-toggle.svelte';
+	import AppSidebar from '$lib/components/app-sidebar.svelte';
+	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { Toaster } from '$lib/components/ui/sonner/index.js';
 	import { ModeWatcher } from 'mode-watcher';
 	import { pwaInfo } from 'virtual:pwa-info';
@@ -19,6 +20,11 @@
 <ModeWatcher />
 
 <PwaToast />
-<ModeToggle />
 
-{@render children()}
+<Sidebar.Provider>
+	<AppSidebar />
+	<main class="p-2">
+		<Sidebar.Trigger />
+		{@render children?.()}
+	</main>
+</Sidebar.Provider>
