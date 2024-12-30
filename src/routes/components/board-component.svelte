@@ -4,9 +4,10 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { globalState } from '$routes/state.svelte';
 	import type { Task, Board } from '@prisma/client';
+	import TaskCard from './task-card.svelte';
+	import ScrollArea from '$lib/components/ui/scroll-area/scroll-area.svelte';
 
-	type PropsType = { board: Board };
-	let { board }: PropsType = $props();
+	let { board }: { board: Board } = $props();
 	let tasks = $state<Task[]>([]);
 
 	async function updateTasks() {
@@ -19,30 +20,19 @@
 	});
 </script>
 
-<Card.Root class="flex flex-col rounded-md">
+<Card.Root class="flex grow flex-col rounded-md">
 	<Card.Header>
 		<Card.Title>{board.name}</Card.Title>
 		<Card.Description>Card description</Card.Description>
 	</Card.Header>
-	<Card.Content class="grow">
-		{#each tasks as task}
-			<Card.Root>
-				<Card.Header>
-					<Card.Title>{task.title}</Card.Title>
-					<Card.Description>{task.description}</Card.Description>
-				</Card.Header>
-				<Card.Content>
-					<p>Card Content</p>
-				</Card.Content>
-				<Card.Footer>
-					<p>Card Footer</p>
-				</Card.Footer>
-			</Card.Root>
-		{/each}
-	</Card.Content>
-	<Card.Footer class="justify-end">
-		<Button variant="secondary" onclick={() => (globalState.selectedBoard = board.name)}>
-			Add task
-		</Button>
+	<ScrollArea class="h-px grow overflow-y-auto pb-4">
+		<Card.Content class="flex flex-col gap-2">
+			{#each tasks as task}
+				<TaskCard {task} />
+			{/each}
+		</Card.Content>
+	</ScrollArea>
+	<Card.Footer class="shrink-0 justify-end">
+		<Button onclick={() => (globalState.selectedBoard = board.name)}>Add task</Button>
 	</Card.Footer>
 </Card.Root>
