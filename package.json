@@ -17,6 +17,7 @@
 	"devDependencies": {
 		"@eslint/compat": "^1.2.3",
 		"@playwright/test": "^1.45.3",
+		"@prisma-idb/idb-client-generator": "^0.11.5",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.0.0",
@@ -52,10 +53,10 @@
 		"zod": "^3.24.1"
 	},
 	"dependencies": {
-		"@prisma-idb/idb-client-generator": "^0.11.0",
 		"@prisma/client": "^6.1.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"@tanstack/table-core": "^8.20.5",
+		"idb": "^8.0.1",
 		"runed": "^0.22.0"
 	}
 }

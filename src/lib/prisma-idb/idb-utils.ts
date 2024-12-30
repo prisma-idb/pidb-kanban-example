@@ -279,12 +279,7 @@ export function whereBoolFilter<T, R extends Prisma.Result<T, object, 'findFirst
 export function whereBytesFilter<T, R extends Prisma.Result<T, object, 'findFirstOrThrow'>>(
 	record: R,
 	fieldName: keyof R,
-	bytesFilter:
-		| undefined
-		| Uint8Array
-		| Prisma.BytesFilter<unknown>
-		| null
-		| Prisma.BytesNullableFilter<unknown>
+	bytesFilter: undefined | Uint8Array | null | Prisma.BytesNullableFilter<unknown>
 ): boolean {
 	if (bytesFilter === undefined) return true;
 
