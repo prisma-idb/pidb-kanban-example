@@ -15,7 +15,10 @@ const config = {
 		files: {
 			serviceWorker: 'src/service-worker.ts'
 		},
-		serviceWorker: { register: false }
+		serviceWorker: { register: false },
+		alias: {
+			$routes: './src/routes'
+		}
 	}
 };
 

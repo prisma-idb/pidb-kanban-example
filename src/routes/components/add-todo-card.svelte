@@ -1,18 +1,17 @@
 <script lang="ts">
+	import { client } from '$lib/client';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import { Label } from '$lib/components/ui/label/index.js';
-	import type { PrismaIDBClient } from '$lib/prisma-idb/prisma-idb-client';
 	import { PlusIcon } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 
-	let { client }: { client?: PrismaIDBClient } = $props();
 	let title = $state('');
 
 	async function addTodo(e: SubmitEvent) {
 		e.preventDefault();
-		await client?.todo.create({ data: { title } });
+		await client!.todo.create({ data: { title } });
 		toast.success('Todo added successfully');
 	}
 </script>

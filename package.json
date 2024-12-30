@@ -50,6 +50,7 @@
 	"dependencies": {
 		"@prisma-idb/idb-client-generator": "^0.11.0",
 		"@prisma/client": "^6.1.0",
-		"@tailwindcss/typography": "^0.5.15"
+		"@tailwindcss/typography": "^0.5.15",
+		"runed": "^0.22.0"
 	}
 }
