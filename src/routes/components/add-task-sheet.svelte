@@ -21,7 +21,11 @@
 
 	const form = superForm(defaults(zod(taskFormSchema)), {
 		SPA: true,
-		validators: zod(taskFormSchema)
+		validators: zod(taskFormSchema),
+		onUpdate({ form }) {
+			if (form.valid) createTask();
+			form.errors = form.errors;
+		}
 	});
 	const { form: formData, enhance } = form;
 
@@ -37,13 +41,12 @@
 		if (globalState.selectedBoard) {
 			$formData.boardName = globalState.selectedBoard;
 		}
-		
+
 		updateBoards();
 		client.board.subscribe(['create', 'update', 'delete'], updateBoards);
 	});
 
-	async function createTask(e: SubmitEvent) {
-		e.preventDefault();
+	async function createTask() {
 		const arrayBuffer = await $formData.image?.arrayBuffer();
 		const uint8Array = arrayBuffer ? new Uint8Array(arrayBuffer) : undefined;
 
@@ -66,12 +69,12 @@
 		<Sheet.Header>
 			<Sheet.Title>Add task</Sheet.Title>
 		</Sheet.Header>
-		<form class="py-4" use:enhance enctype="multipart/form-data" onsubmit={createTask}>
+		<form class="py-4" use:enhance enctype="multipart/form-data">
 			<Form.Field {form} name="boardName">
 				<Form.Control>
 					{#snippet children({ props })}
 						<Form.Label>For board</Form.Label>
-						<Select.Root type="single" bind:value={$formData.boardName} name={props.name}>
+						<Select.Root type="single" bind:value={$formData.boardName} name={props.name} required>
 							<Select.Trigger {...props}>
 								{$formData.boardName ?? 'Select a verified email to display'}
 							</Select.Trigger>

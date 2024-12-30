@@ -2,11 +2,11 @@
 	import { client } from '$lib/client';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card/index.js';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import ScrollArea from '$lib/components/ui/scroll-area/scroll-area.svelte';
 	import { globalState } from '$routes/state.svelte';
 	import type { Board, Task } from '@prisma/client';
 	import { MenuIcon } from 'lucide-svelte';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import TaskCard from './task-card.svelte';
 
 	let { board }: { board: Board } = $props();
