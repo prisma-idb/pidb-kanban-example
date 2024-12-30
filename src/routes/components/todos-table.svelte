@@ -5,8 +5,13 @@
 
 	let todos = $state<Todo[]>([]);
 
+	async function updateTodos() {
+		todos = await client!.todo.findMany();
+	}
+
 	$effect(() => {
-		client!.todo.findMany().then((v) => (todos = v));
+		updateTodos();
+		client!.todo.subscribe(['create', 'update', 'delete'], () => updateTodos());
 	});
 </script>
 

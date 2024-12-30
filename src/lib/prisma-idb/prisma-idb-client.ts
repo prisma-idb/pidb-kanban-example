@@ -34,7 +34,7 @@ export class PrismaIDBClient {
 	}
 }
 
-class BaseIDBModelClass {
+class BaseIDBModelClass<T extends keyof PrismaIDBSchema> {
 	protected client: PrismaIDBClient;
 	protected keyPath: string[];
 	private eventEmitter: EventTarget;
@@ -47,7 +47,12 @@ class BaseIDBModelClass {
 
 	subscribe(
 		event: 'create' | 'update' | 'delete' | ('create' | 'update' | 'delete')[],
-		callback: () => void
+		callback: (
+			e: CustomEventInit<{
+				keyPath: PrismaIDBSchema[T]['key'];
+				oldKeyPath?: PrismaIDBSchema[T]['key'];
+			}>
+		) => void
 	) {
 		if (Array.isArray(event)) {
 			event.forEach((event) => this.eventEmitter.addEventListener(event, callback));
@@ -58,7 +63,12 @@ class BaseIDBModelClass {
 
 	unsubscribe(
 		event: 'create' | 'update' | 'delete' | ('create' | 'update' | 'delete')[],
-		callback: () => void
+		callback: (
+			e: CustomEventInit<{
+				keyPath: PrismaIDBSchema[T]['key'];
+				oldKeyPath?: PrismaIDBSchema[T]['key'];
+			}>
+		) => void
 	) {
 		if (Array.isArray(event)) {
 			event.forEach((event) => this.eventEmitter.removeEventListener(event, callback));
@@ -67,12 +77,20 @@ class BaseIDBModelClass {
 		this.eventEmitter.removeEventListener(event, callback);
 	}
 
-	protected emit(event: 'create' | 'update' | 'delete') {
-		this.eventEmitter.dispatchEvent(new Event(event));
+	protected emit(
+		event: 'create' | 'update' | 'delete',
+		keyPath: PrismaIDBSchema[T]['key'],
+		oldKeyPath?: PrismaIDBSchema[T]['key']
+	) {
+		if (event === 'update') {
+			this.eventEmitter.dispatchEvent(new CustomEvent(event, { detail: { keyPath, oldKeyPath } }));
+			return;
+		}
+		this.eventEmitter.dispatchEvent(new CustomEvent(event, { detail: { keyPath } }));
 	}
 }
 
-class TodoIDBClass extends BaseIDBModelClass {
+class TodoIDBClass extends BaseIDBModelClass<'Todo'> {
 	private async _applyWhereClause<
 		W extends Prisma.Args<Prisma.TodoDelegate, 'findFirstOrThrow'>['where'],
 		R extends Prisma.Result<Prisma.TodoDelegate, object, 'findFirstOrThrow'>
@@ -405,6 +423,7 @@ class TodoIDBClass extends BaseIDBModelClass {
 			query.select
 		)[0];
 		this._preprocessListFields([recordsWithRelations]);
+		this.emit('create', keyPath);
 		return recordsWithRelations as Prisma.Result<Prisma.TodoDelegate, Q, 'create'>;
 	}
 
@@ -416,7 +435,8 @@ class TodoIDBClass extends BaseIDBModelClass {
 		tx = tx ?? this.client._db.transaction(['Todo'], 'readwrite');
 		for (const createData of createManyData) {
 			const record = this._removeNestedCreateData(await this._fillDefaults(createData, tx));
-			await tx.objectStore('Todo').add(record);
+			const keyPath = await tx.objectStore('Todo').add(record);
+			this.emit('create', keyPath);
 		}
 		return { count: createManyData.length };
 	}
@@ -430,7 +450,8 @@ class TodoIDBClass extends BaseIDBModelClass {
 		tx = tx ?? this.client._db.transaction(['Todo'], 'readwrite');
 		for (const createData of createManyData) {
 			const record = this._removeNestedCreateData(await this._fillDefaults(createData, tx));
-			await tx.objectStore('Todo').add(record);
+			const keyPath = await tx.objectStore('Todo').add(record);
+			this.emit('create', keyPath);
 			records.push(this._applySelectClause([record], query.select)[0]);
 		}
 		this._preprocessListFields(records);
@@ -447,6 +468,7 @@ class TodoIDBClass extends BaseIDBModelClass {
 		const record = await this.findUnique(query, tx);
 		if (!record) throw new Error('Record not found');
 		await tx.objectStore('Todo').delete([record.id]);
+		this.emit('delete', [record.id]);
 		return record;
 	}
 
@@ -501,6 +523,7 @@ class TodoIDBClass extends BaseIDBModelClass {
 			}
 		}
 		const keyPath = await tx.objectStore('Todo').put(record);
+		this.emit('update', keyPath, startKeyPath);
 		for (let i = 0; i < startKeyPath.length; i++) {
 			if (startKeyPath[i] !== endKeyPath[i]) {
 				break;
