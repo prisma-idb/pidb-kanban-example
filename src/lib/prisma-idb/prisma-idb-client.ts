@@ -643,7 +643,7 @@ class BoardIDBClass extends BaseIDBModelClass<'Board'> {
 	}
 
 	async deleteMany<Q extends Prisma.Args<Prisma.BoardDelegate, 'deleteMany'>>(
-		query: Q,
+		query?: Q,
 		tx?: IDBUtils.ReadwriteTransactionType
 	): Promise<Prisma.Result<Prisma.BoardDelegate, Q, 'deleteMany'>> {
 		const storesNeeded = this._getNeededStoresForFind(query);
@@ -1407,7 +1407,7 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 	}
 
 	async deleteMany<Q extends Prisma.Args<Prisma.TaskDelegate, 'deleteMany'>>(
-		query: Q,
+		query?: Q,
 		tx?: IDBUtils.ReadwriteTransactionType
 	): Promise<Prisma.Result<Prisma.TaskDelegate, Q, 'deleteMany'>> {
 		const storesNeeded = this._getNeededStoresForFind(query);

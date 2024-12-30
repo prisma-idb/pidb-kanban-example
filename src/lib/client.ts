@@ -1,4 +1,11 @@
 import { browser } from '$app/environment';
 import { PrismaIDBClient } from './prisma-idb/prisma-idb-client';
 
-export const client = browser ? await PrismaIDBClient.createClient() : undefined;
+let client: PrismaIDBClient;
+
+async function initializeClient() {
+	if (!browser) throw new Error('PrismaIDBClient can only be initialized in the browser');
+	client = await PrismaIDBClient.createClient();
+}
+
+export { initializeClient, client };

@@ -282,6 +282,7 @@ export function whereBytesFilter<T, R extends Prisma.Result<T, object, 'findFirs
 	bytesFilter:
 		| undefined
 		| Uint8Array
+		| Prisma.BytesFilter<unknown>
 		| null
 		| Prisma.BytesNullableFilter<unknown>
 ): boolean {
@@ -437,6 +438,7 @@ export function handleBytesUpdateField<T, R extends Prisma.Result<T, object, 'fi
 	bytesUpdate:
 		| undefined
 		| Uint8Array
+		| Prisma.BytesFieldUpdateOperationsInput
 		| null
 		| Prisma.NullableBytesFieldUpdateOperationsInput
 ) {

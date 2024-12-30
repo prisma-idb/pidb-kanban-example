@@ -4,21 +4,21 @@
 	import type { Prisma } from '@prisma/client';
 	import { PlusIcon } from 'lucide-svelte';
 	import AddBoardPopover from './components/add-board-popover.svelte';
-	import { client } from '$lib/client';
 	import Board from './components/board.svelte';
 	import AddTaskDialog from './components/add-task-dialog.svelte';
+	import { client } from '$lib/client';
 
 	let boards: Prisma.BoardGetPayload<{ include: { tasks: true } }>[] = $state([]);
 
 	async function updateBoards() {
-		boards = await client!.board.findMany({
+		boards = await client.board.findMany({
 			include: { tasks: true }
 		});
 	}
 
 	$effect(() => {
 		updateBoards();
-		client!.board.subscribe(['create', 'update', 'delete'], () => {
+		client.board.subscribe(['create', 'update', 'delete'], () => {
 			updateBoards();
 		});
 	});

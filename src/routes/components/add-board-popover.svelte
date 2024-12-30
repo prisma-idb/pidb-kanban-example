@@ -17,7 +17,7 @@
 
 	async function addBoard(e: SubmitEvent) {
 		e.preventDefault();
-		await client!.board.create({ data: { name: newBoardName } });
+		await client.board.create({ data: { name: newBoardName } });
 		toast.success('Board added successfully.');
 		open = false;
 	}

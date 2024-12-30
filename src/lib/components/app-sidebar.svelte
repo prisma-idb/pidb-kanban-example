@@ -8,7 +8,7 @@
 	import { client } from '$lib/client';
 
 	async function reset() {
-		await client!.board.deleteMany();
+		await client.board.deleteMany();
 	}
 </script>
 

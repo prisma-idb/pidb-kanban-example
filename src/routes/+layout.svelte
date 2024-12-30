@@ -22,7 +22,7 @@
 	<AppSidebar />
 	<main class="flex w-full flex-col p-2">
 		<Sidebar.Trigger />
-		<div class="mx-auto flex w-full flex-col gap-2 py-2 grow">
+		<div class="mx-auto flex w-full grow flex-col gap-2 py-2">
 			{@render children?.()}
 		</div>
 	</main>
