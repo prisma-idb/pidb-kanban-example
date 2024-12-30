@@ -15,7 +15,8 @@ const config = {
 			$routes: './src/routes'
 		},
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/pidb-kanban-example' : ''
+			base: process.env.NODE_ENV === 'production' ? '/pidb-kanban-example' : '',
+			relative: false
 		}
 	}
 };
