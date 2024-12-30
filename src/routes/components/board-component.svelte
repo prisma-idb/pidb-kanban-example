@@ -1,11 +1,22 @@
 <script lang="ts">
+	import { client } from '$lib/client';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { globalState } from '$routes/state.svelte';
-	import type { Prisma } from '@prisma/client';
+	import type { Task, Board } from '@prisma/client';
 
-	type PropsType = { board: Prisma.BoardGetPayload<{ include: { tasks: true } }> };
+	type PropsType = { board: Board };
 	let { board }: PropsType = $props();
+	let tasks = $state<Task[]>([]);
+
+	async function updateTasks() {
+		tasks = await client.task.findMany({ where: { boardName: board.name } });
+	}
+
+	$effect(() => {
+		updateTasks();
+		client.task.subscribe(['create', 'update', 'delete'], updateTasks);
+	});
 </script>
 
 <Card.Root class="flex flex-col rounded-md">
@@ -14,11 +25,11 @@
 		<Card.Description>Card description</Card.Description>
 	</Card.Header>
 	<Card.Content class="grow">
-		{#each board.tasks as task}
+		{#each tasks as task}
 			<Card.Root>
 				<Card.Header>
 					<Card.Title>{task.title}</Card.Title>
-					<Card.Description>{task.content}</Card.Description>
+					<Card.Description>{task.description}</Card.Description>
 				</Card.Header>
 				<Card.Content>
 					<p>Card Content</p>

@@ -1,19 +1,17 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Popover from '$lib/components/ui/popover';
-	import type { Prisma } from '@prisma/client';
+	import type { Board } from '@prisma/client';
 	import { PlusIcon } from 'lucide-svelte';
 	import AddBoardPopover from './components/add-board-popover.svelte';
-	import Board from './components/board.svelte';
-	import AddTaskDialog from './components/add-task-dialog.svelte';
+	import BoardComponent from './components/board-component.svelte';
+	import AddTaskDialog from './components/add-task-sheet.svelte';
 	import { client } from '$lib/client';
 
-	let boards: Prisma.BoardGetPayload<{ include: { tasks: true } }>[] = $state([]);
+	let boards: Board[] = $state([]);
 
 	async function updateBoards() {
-		boards = await client.board.findMany({
-			include: { tasks: true }
-		});
+		boards = await client.board.findMany();
 	}
 
 	$effect(() => {
@@ -28,7 +26,7 @@
 
 <div class="grid h-full grid-cols-[repeat(auto-fill,_minmax(16rem,_1fr))] gap-2">
 	{#each boards as board}
-		<Board {board} />
+		<BoardComponent {board} />
 	{/each}
 	<AddBoardPopover>
 		<Popover.Trigger>

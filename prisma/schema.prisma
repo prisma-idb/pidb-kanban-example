@@ -20,8 +20,8 @@ model Board {
 model Task {
   id          Int      @id @default(autoincrement())
   title       String
-  content     String?
-  isCompleted Boolean
+  description String?
+  isCompleted Boolean  @default(false)
   createdAt   DateTime @default(now())
   image       Bytes?
   boardName   String

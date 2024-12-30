@@ -855,7 +855,7 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 		return (
 			await Promise.all(
 				records.map(async (record) => {
-					const stringFields = ['title', 'content', 'boardName'] as const;
+					const stringFields = ['title', 'description', 'boardName'] as const;
 					for (const field of stringFields) {
 						if (!IDBUtils.whereStringFilter(record, field, whereClause[field])) return null;
 					}
@@ -917,7 +917,7 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 			for (const untypedKey of [
 				'id',
 				'title',
-				'content',
+				'description',
 				'isCompleted',
 				'createdAt',
 				'image',
@@ -997,7 +997,7 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 		const scalarFields = [
 			'id',
 			'title',
-			'content',
+			'description',
 			'isCompleted',
 			'createdAt',
 			'image',
@@ -1019,7 +1019,7 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 		const scalarFields = [
 			'id',
 			'title',
-			'content',
+			'description',
 			'isCompleted',
 			'createdAt',
 			'image',
@@ -1043,8 +1043,11 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 			const cursor = await store.openCursor(null, 'prev');
 			data.id = cursor ? Number(cursor.key) + 1 : 1;
 		}
-		if (data.content === undefined) {
-			data.content = null;
+		if (data.description === undefined) {
+			data.description = null;
+		}
+		if (data.isCompleted === undefined) {
+			data.isCompleted = false;
 		}
 		if (data.createdAt === undefined) {
 			data.createdAt = new Date();
@@ -1433,7 +1436,7 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 			throw new Error('Record not found');
 		}
 		const startKeyPath: PrismaIDBSchema['Task']['key'] = [record.id];
-		const stringFields = ['title', 'content', 'boardName'] as const;
+		const stringFields = ['title', 'description', 'boardName'] as const;
 		for (const field of stringFields) {
 			IDBUtils.handleStringUpdateField(record, field, query.data[field]);
 		}
