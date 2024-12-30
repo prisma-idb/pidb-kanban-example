@@ -1,6 +1,6 @@
 {
-	"name": "Svelte Todo Example",
-	"short_name": "TodoApp",
+	"name": "Svelte Kanban",
+	"short_name": "SvelteKanban",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#ffffff",

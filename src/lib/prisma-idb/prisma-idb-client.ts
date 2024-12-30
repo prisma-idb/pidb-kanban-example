@@ -1505,7 +1505,7 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 				);
 			}
 		}
-		if (record.boardName !== undefined) {
+		if (query.data.boardName !== undefined) {
 			const related = await this.client.board.findUnique({ where: { name: record.boardName } }, tx);
 			if (!related) throw new Error('Related record not found');
 		}
