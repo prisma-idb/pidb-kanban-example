@@ -15,7 +15,7 @@
 <Sidebar.Root>
 	<Sidebar.Header>
 		<Button class="h-fit flex-col items-start gap-0" variant="ghost">
-			<span class="text-lg font-bold">Svelte Kanban</span>
+			<span class="text-lg font-bold">PIDB Kanban</span>
 			<span class="text-xs">@prisma-idb/idb-client-generator</span>
 		</Button>
 	</Sidebar.Header>

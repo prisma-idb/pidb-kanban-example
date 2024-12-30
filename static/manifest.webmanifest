@@ -1,6 +1,6 @@
 {
-	"name": "Svelte Kanban",
-	"short_name": "SvelteKanban",
+	"name": "PIDB Kanban",
+	"short_name": "PIDBKanban",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#ffffff",
