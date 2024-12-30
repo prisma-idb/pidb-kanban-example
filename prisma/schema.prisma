@@ -12,9 +12,15 @@ generator prismaIDB {
   output   = "../src/lib/prisma-idb"
 }
 
-model Todo {
-  id        Int      @id @default(autoincrement())
+model Board {
+  name  String @id
+  tasks Task[]
+}
+
+model Task {
+  id        Int     @id @default(autoincrement())
   title     String
-  completed Boolean  @default(false)
-  createdAt DateTime @default(now())
+  content   String?
+  boardName String
+  board     Board   @relation(fields: [boardName], references: [name])
 }
