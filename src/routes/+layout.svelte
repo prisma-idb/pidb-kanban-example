@@ -20,9 +20,9 @@
 
 <Sidebar.Provider>
 	<AppSidebar />
-	<main class="w-full gap-2 p-2">
+	<main class="flex w-full flex-col p-2">
 		<Sidebar.Trigger />
-		<div class="mx-auto flex w-full flex-col gap-2 py-2">
+		<div class="mx-auto flex w-full flex-col gap-2 py-2 grow">
 			{@render children?.()}
 		</div>
 	</main>

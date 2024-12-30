@@ -7,6 +7,7 @@
 	import { IsMobile } from '$lib/hooks/is-mobile.svelte';
 	import { PlusIcon } from 'lucide-svelte';
 	import type { Snippet } from 'svelte';
+	import { toast } from 'svelte-sonner';
 
 	let { children }: { children: Snippet } = $props();
 	const isMobile = new IsMobile();
@@ -16,7 +17,9 @@
 
 	async function addBoard(e: SubmitEvent) {
 		e.preventDefault();
-		client!.board.create({ data: { name: newBoardName } });
+		await client!.board.create({ data: { name: newBoardName } });
+		toast.success('Board added successfully.');
+		open = false;
 	}
 </script>
 
@@ -26,7 +29,7 @@
 		<form class="flex w-full max-w-sm flex-col gap-1.5" onsubmit={addBoard}>
 			<Label for="board-name">Board name</Label>
 			<Input id="board-name" placeholder="Type here" required bind:value={newBoardName} />
-			<Button class="ml-auto w-fit"><PlusIcon />Add</Button>
+			<Button class="ml-auto w-fit" type="submit"><PlusIcon />Add</Button>
 		</form>
 	</Popover.Content>
 </Popover.Root>

@@ -45,12 +45,14 @@
 		"tailwindcss-animate": "^1.0.7",
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.0.0",
+		"vaul-svelte": "^1.0.0-next.3",
 		"vite": "^6.0.0"
 	},
 	"dependencies": {
 		"@prisma-idb/idb-client-generator": "^0.11.0",
 		"@prisma/client": "^6.1.0",
 		"@tailwindcss/typography": "^0.5.15",
+		"@tanstack/table-core": "^8.20.5",
 		"runed": "^0.22.0"
 	}
 }

@@ -247,6 +247,143 @@ export function whereNumberFilter<T, R extends Prisma.Result<T, object, 'findFir
 	return true;
 }
 
+export function whereBoolFilter<T, R extends Prisma.Result<T, object, 'findFirstOrThrow'>>(
+	record: R,
+	fieldName: keyof R,
+	boolFilter: undefined | boolean | Prisma.BoolFilter<unknown>
+): boolean {
+	if (boolFilter === undefined) return true;
+
+	const value = record[fieldName] as boolean | null;
+	if (boolFilter === null) return value === null;
+
+	if (typeof boolFilter === 'boolean') {
+		if (value !== boolFilter) return false;
+	} else {
+		if (boolFilter.equals === null) {
+			if (value !== null) return false;
+		}
+		if (typeof boolFilter.equals === 'boolean') {
+			if (boolFilter.equals != value) return false;
+		}
+		if (boolFilter.not === null) {
+			if (value === null) return false;
+		}
+		if (typeof boolFilter.not === 'boolean') {
+			if (boolFilter.not == value) return false;
+		}
+	}
+	return true;
+}
+
+export function whereBytesFilter<T, R extends Prisma.Result<T, object, 'findFirstOrThrow'>>(
+	record: R,
+	fieldName: keyof R,
+	bytesFilter:
+		| undefined
+		| Uint8Array
+		| null
+		| Prisma.BytesNullableFilter<unknown>
+): boolean {
+	if (bytesFilter === undefined) return true;
+
+	function areUint8ArraysEqual(arr1: Uint8Array, arr2: Uint8Array) {
+		if (arr1.length !== arr2.length) return false;
+		for (let i = 0; i < arr1.length; i++) if (arr1[i] !== arr2[i]) return false;
+		return true;
+	}
+
+	const value = record[fieldName] as Uint8Array | null;
+	if (bytesFilter === null) return value === null;
+
+	if (bytesFilter instanceof Uint8Array) {
+		if (value === null) return false;
+		if (!areUint8ArraysEqual(bytesFilter, value)) return false;
+	} else {
+		if (bytesFilter.equals === null) {
+			if (value !== null) return false;
+		}
+		if (Buffer.isBuffer(bytesFilter.equals)) {
+			if (value === null) return false;
+			if (!bytesFilter.equals.equals(value)) return false;
+		}
+		if (bytesFilter.not === null) {
+			if (value === null) return false;
+		}
+		if (Buffer.isBuffer(bytesFilter.not)) {
+			if (value === null) return false;
+			if (bytesFilter.not.equals(value)) return false;
+		}
+		if (Array.isArray(bytesFilter.in)) {
+			if (value === null) return false;
+			if (!bytesFilter.in.some((buffer) => areUint8ArraysEqual(buffer, value))) return false;
+		}
+		if (Array.isArray(bytesFilter.notIn)) {
+			if (value === null) return false;
+			if (bytesFilter.notIn.some((buffer) => areUint8ArraysEqual(buffer, value))) return false;
+		}
+	}
+	return true;
+}
+
+export function whereDateTimeFilter<T, R extends Prisma.Result<T, object, 'findFirstOrThrow'>>(
+	record: R,
+	fieldName: keyof R,
+	dateTimeFilter: undefined | Date | string | Prisma.DateTimeFilter<unknown>
+): boolean {
+	if (dateTimeFilter === undefined) return true;
+
+	const value = record[fieldName] as Date | null;
+	if (dateTimeFilter === null) return value === null;
+
+	if (typeof dateTimeFilter === 'string' || dateTimeFilter instanceof Date) {
+		if (value === null) return false;
+		if (new Date(dateTimeFilter).getTime() !== value.getTime()) return false;
+	} else {
+		if (dateTimeFilter.equals === null) {
+			if (value !== null) return false;
+		}
+		if (typeof dateTimeFilter.equals === 'string' || dateTimeFilter.equals instanceof Date) {
+			if (value === null) return false;
+			if (new Date(dateTimeFilter.equals).getTime() !== value.getTime()) return false;
+		}
+		if (dateTimeFilter.not === null) {
+			if (value === null) return false;
+		}
+		if (typeof dateTimeFilter.equals === 'string' || dateTimeFilter.equals instanceof Date) {
+			if (value === null) return false;
+			if (new Date(dateTimeFilter.equals).getTime() === value.getTime()) return false;
+		}
+		if (Array.isArray(dateTimeFilter.in)) {
+			if (value === null) return false;
+			if (!dateTimeFilter.in.map((d) => new Date(d)).some((d) => d.getTime() === value.getTime()))
+				return false;
+		}
+		if (Array.isArray(dateTimeFilter.notIn)) {
+			if (value === null) return false;
+			if (dateTimeFilter.notIn.map((d) => new Date(d)).some((d) => d.getTime() === value.getTime()))
+				return false;
+		}
+		if (typeof dateTimeFilter.lt === 'string' || dateTimeFilter.lt instanceof Date) {
+			if (value === null) return false;
+			if (!(value.getTime() < new Date(dateTimeFilter.lt).getTime())) return false;
+		}
+		if (typeof dateTimeFilter.lte === 'string' || dateTimeFilter.lte instanceof Date) {
+			if (value === null) return false;
+			if (!(value.getTime() <= new Date(dateTimeFilter.lte).getTime())) return false;
+		}
+		if (typeof dateTimeFilter.gt === 'string' || dateTimeFilter.gt instanceof Date) {
+			if (value === null) return false;
+			if (!(value.getTime() > new Date(dateTimeFilter.gt).getTime())) return false;
+		}
+		if (typeof dateTimeFilter.gte === 'string' || dateTimeFilter.gte instanceof Date) {
+			if (value === null) return false;
+			if (!(value.getTime() >= new Date(dateTimeFilter.gte).getTime())) return false;
+		}
+	}
+	return true;
+}
+
 export function handleStringUpdateField<T, R extends Prisma.Result<T, object, 'findFirstOrThrow'>>(
 	record: R,
 	fieldName: keyof R,
@@ -262,6 +399,52 @@ export function handleStringUpdateField<T, R extends Prisma.Result<T, object, 'f
 		(record[fieldName] as string | null) = stringUpdate;
 	} else if (stringUpdate.set !== undefined) {
 		(record[fieldName] as string | null) = stringUpdate.set;
+	}
+}
+
+export function handleBooleanUpdateField<T, R extends Prisma.Result<T, object, 'findFirstOrThrow'>>(
+	record: R,
+	fieldName: keyof R,
+	booleanUpdate: undefined | boolean | Prisma.BoolFieldUpdateOperationsInput
+) {
+	if (booleanUpdate === undefined) return;
+	if (typeof booleanUpdate === 'boolean') {
+		(record[fieldName] as boolean) = booleanUpdate;
+	} else if (booleanUpdate.set !== undefined) {
+		(record[fieldName] as boolean) = booleanUpdate.set;
+	}
+}
+
+export function handleDateTimeUpdateField<
+	T,
+	R extends Prisma.Result<T, object, 'findFirstOrThrow'>
+>(
+	record: R,
+	fieldName: keyof R,
+	dateTimeUpdate: undefined | Date | string | Prisma.DateTimeFieldUpdateOperationsInput
+) {
+	if (dateTimeUpdate === undefined) return;
+	if (typeof dateTimeUpdate === 'string' || dateTimeUpdate instanceof Date) {
+		(record[fieldName] as Date) = new Date(dateTimeUpdate);
+	} else if (dateTimeUpdate.set !== undefined) {
+		(record[fieldName] as Date) = new Date(dateTimeUpdate.set);
+	}
+}
+
+export function handleBytesUpdateField<T, R extends Prisma.Result<T, object, 'findFirstOrThrow'>>(
+	record: R,
+	fieldName: keyof R,
+	bytesUpdate:
+		| undefined
+		| Uint8Array
+		| null
+		| Prisma.NullableBytesFieldUpdateOperationsInput
+) {
+	if (bytesUpdate === undefined) return;
+	if (bytesUpdate instanceof Uint8Array || bytesUpdate === null) {
+		(record[fieldName] as Uint8Array | null) = bytesUpdate;
+	} else if (bytesUpdate.set !== undefined) {
+		(record[fieldName] as Uint8Array | null) = bytesUpdate.set;
 	}
 }
 

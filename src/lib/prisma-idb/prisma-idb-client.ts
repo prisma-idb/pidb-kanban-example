@@ -631,8 +631,12 @@ class BoardIDBClass extends BaseIDBModelClass<'Board'> {
 		tx = tx ?? this.client._db.transaction(Array.from(storesNeeded), 'readwrite');
 		const record = await this.findUnique(query, tx);
 		if (!record) throw new Error('Record not found');
-		const relatedTask = await this.client.task.findMany({ where: { boardName: record.name } }, tx);
-		if (relatedTask.length) throw new Error('Cannot delete record, other records depend on it');
+		await this.client.task.deleteMany(
+			{
+				where: { boardName: record.name }
+			},
+			tx
+		);
 		await tx.objectStore('Board').delete([record.name]);
 		this.emit('delete', [record.name]);
 		return record;
@@ -859,6 +863,18 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 					for (const field of numberFields) {
 						if (!IDBUtils.whereNumberFilter(record, field, whereClause[field])) return null;
 					}
+					const booleanFields = ['isCompleted'] as const;
+					for (const field of booleanFields) {
+						if (!IDBUtils.whereBoolFilter(record, field, whereClause[field])) return null;
+					}
+					const bytesFields = ['image'] as const;
+					for (const field of bytesFields) {
+						if (!IDBUtils.whereBytesFilter(record, field, whereClause[field])) return null;
+					}
+					const dateTimeFields = ['createdAt'] as const;
+					for (const field of dateTimeFields) {
+						if (!IDBUtils.whereDateTimeFilter(record, field, whereClause[field])) return null;
+					}
 					if (whereClause.board) {
 						const { is, isNot, ...rest } = whereClause.board;
 						if (is !== null && is !== undefined) {
@@ -898,7 +914,16 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 		}
 		return records.map((record) => {
 			const partialRecord: Partial<typeof record> = record;
-			for (const untypedKey of ['id', 'title', 'content', 'boardName', 'board']) {
+			for (const untypedKey of [
+				'id',
+				'title',
+				'content',
+				'isCompleted',
+				'createdAt',
+				'image',
+				'boardName',
+				'board'
+			]) {
 				const key = untypedKey as keyof typeof record & keyof S;
 				if (!selectClause[key]) delete partialRecord[key];
 			}
@@ -969,7 +994,15 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 		orderByInput: Prisma.TaskOrderByWithRelationInput,
 		tx: IDBUtils.TransactionType
 	): Promise<unknown> {
-		const scalarFields = ['id', 'title', 'content', 'boardName'] as const;
+		const scalarFields = [
+			'id',
+			'title',
+			'content',
+			'isCompleted',
+			'createdAt',
+			'image',
+			'boardName'
+		] as const;
 		for (const field of scalarFields) if (orderByInput[field]) return record[field];
 		if (orderByInput.board) {
 			return await this.client.board._resolveOrderByKey(
@@ -983,7 +1016,15 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 	_resolveSortOrder(
 		orderByInput: Prisma.TaskOrderByWithRelationInput
 	): Prisma.SortOrder | { sort: Prisma.SortOrder; nulls?: 'first' | 'last' } {
-		const scalarFields = ['id', 'title', 'content', 'boardName'] as const;
+		const scalarFields = [
+			'id',
+			'title',
+			'content',
+			'isCompleted',
+			'createdAt',
+			'image',
+			'boardName'
+		] as const;
 		for (const field of scalarFields) if (orderByInput[field]) return orderByInput[field];
 		if (orderByInput.board) {
 			return this.client.board._resolveSortOrder(orderByInput.board);
@@ -1004,6 +1045,15 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 		}
 		if (data.content === undefined) {
 			data.content = null;
+		}
+		if (data.createdAt === undefined) {
+			data.createdAt = new Date();
+		}
+		if (data.image === undefined) {
+			data.image = null;
+		}
+		if (typeof data.createdAt === 'string') {
+			data.createdAt = new Date(data.createdAt);
 		}
 		return data;
 	}
@@ -1386,6 +1436,18 @@ class TaskIDBClass extends BaseIDBModelClass<'Task'> {
 		const stringFields = ['title', 'content', 'boardName'] as const;
 		for (const field of stringFields) {
 			IDBUtils.handleStringUpdateField(record, field, query.data[field]);
+		}
+		const dateTimeFields = ['createdAt'] as const;
+		for (const field of dateTimeFields) {
+			IDBUtils.handleDateTimeUpdateField(record, field, query.data[field]);
+		}
+		const booleanFields = ['isCompleted'] as const;
+		for (const field of booleanFields) {
+			IDBUtils.handleBooleanUpdateField(record, field, query.data[field]);
+		}
+		const bytesFields = ['image'] as const;
+		for (const field of bytesFields) {
+			IDBUtils.handleBytesUpdateField(record, field, query.data[field]);
 		}
 		const intFields = ['id'] as const;
 		for (const field of intFields) {

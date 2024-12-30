@@ -18,9 +18,12 @@ model Board {
 }
 
 model Task {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  boardName String
-  board     Board   @relation(fields: [boardName], references: [name])
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String?
+  isCompleted Boolean
+  createdAt   DateTime @default(now())
+  image       Bytes?
+  boardName   String
+  board       Board    @relation(fields: [boardName], references: [name], onDelete: Cascade)
 }
