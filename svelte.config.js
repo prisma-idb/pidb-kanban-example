@@ -18,6 +18,9 @@ const config = {
 		serviceWorker: { register: false },
 		alias: {
 			$routes: './src/routes'
+		},
+		paths: {
+			base: process.argv.includes('dev') ? '' : process.env.BASE_PATH
 		}
 	}
 };
