@@ -22,6 +22,7 @@
 		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
+		"@tailwindcss/typography": "^0.5.15",
 		"@types/node": "^22.10.2",
 		"@vite-pwa/sveltekit": "^0.6.6",
 		"autoprefixer": "^10.4.20",
@@ -54,9 +55,9 @@
 	},
 	"dependencies": {
 		"@prisma/client": "^6.1.0",
-		"@tailwindcss/typography": "^0.5.15",
 		"@tanstack/table-core": "^8.20.5",
 		"idb": "^8.0.1",
+		"marked": "^15.0.4",
 		"runed": "^0.22.0"
 	}
 }

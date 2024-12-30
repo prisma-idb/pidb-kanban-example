@@ -1,6 +1,6 @@
 # PIDB Kanban Example
 
-This repository is a demo for the main package [`@prisma-idb/idb-client-generator`](https://www.npmjs.com/package/@prisma-idb/idb-client-generator). It showcases how to utilize it, allowing for fast offline, structured, ORM-like DX.
+This repository is a demo for the main package [`@prisma-idb/idb-client-generator`](https://www.npmjs.com/package/@prisma-idb/idb-client-generator). It showcases how to utilize it, allowing for fast offline, structured, and a Prisma ORM-like DX.
 
 ## Features
 
