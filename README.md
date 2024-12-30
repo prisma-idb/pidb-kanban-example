@@ -1,4 +1,4 @@
-# PIDB Kanban Example
+# [PIDB Kanban Example](https://prisma-idb.github.io/pidb-kanban-example/)
 
 This repository is a demo for the main package [`@prisma-idb/idb-client-generator`](https://www.npmjs.com/package/@prisma-idb/idb-client-generator). It showcases how to utilize it, allowing for fast offline, structured, and a Prisma ORM-like DX.
 
