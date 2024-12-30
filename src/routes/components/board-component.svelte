@@ -51,9 +51,11 @@
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content align="end">
 				<DropdownMenu.Group>
-					<DropdownMenu.Item>Edit</DropdownMenu.Item>
-					<DropdownMenu.Item onclick={deleteBoard}>Delete</DropdownMenu.Item>
+					<DropdownMenu.Item onclick={() => (globalState.boardToEdit = board.name)}>
+						Edit
+					</DropdownMenu.Item>
 					<DropdownMenu.Item onclick={markAllAsDone}>Mark all as done</DropdownMenu.Item>
+					<DropdownMenu.Item class="text-red-500" onclick={deleteBoard}>Delete</DropdownMenu.Item>
 				</DropdownMenu.Group>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
@@ -66,6 +68,6 @@
 		</Card.Content>
 	</ScrollArea>
 	<Card.Footer class="shrink-0 justify-end">
-		<Button onclick={() => (globalState.selectedBoard = board.name)}>Add task</Button>
+		<Button onclick={() => (globalState.boardToAddTaskTo = board.name)}>Add task</Button>
 	</Card.Footer>
 </Card.Root>

@@ -6,8 +6,9 @@
 	import type { Board } from '@prisma/client';
 	import { PlusIcon } from 'lucide-svelte';
 	import AddBoardPopover from './components/add-board-popover.svelte';
-	import AddTaskDialog from './components/add-task-sheet.svelte';
 	import BoardComponent from './components/board-component.svelte';
+	import EditBoardName from './components/edit-board-name.svelte';
+	import TaskSheet from './components/task-sheet.svelte';
 
 	let boards: Board[] = $state([]);
 
@@ -23,7 +24,8 @@
 	});
 </script>
 
-<AddTaskDialog />
+<TaskSheet />
+<EditBoardName />
 
 <div class="flex grow">
 	<ScrollArea class="w-px grow" orientation="both">

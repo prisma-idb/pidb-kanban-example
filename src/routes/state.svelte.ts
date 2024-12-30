@@ -1,7 +1,11 @@
 type GlobalState = {
-	selectedBoard: string | undefined;
+	boardToAddTaskTo: string | undefined;
+	boardToEdit: string | undefined;
+	taskToEdit: number | undefined;
 };
 
 export const globalState: GlobalState = $state({
-	selectedBoard: undefined
+	boardToAddTaskTo: undefined,
+	boardToEdit: undefined,
+	taskToEdit: undefined
 });
