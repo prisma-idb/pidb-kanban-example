@@ -13,6 +13,7 @@
 	import PwaButton from '../../routes/components/pwa-button.svelte';
 	import Button from './ui/button/button.svelte';
 	import { client } from '$lib/client';
+	import { base } from '$app/paths';
 
 	async function reset() {
 		await client.board.deleteMany();
@@ -48,7 +49,7 @@
 
 <Sidebar.Root>
 	<Sidebar.Header>
-		<Button class="h-fit flex-col items-start gap-0" variant="ghost" href="/">
+		<Button class="h-fit flex-col items-start gap-0" variant="ghost" href="{base}/">
 			<span class="text-lg font-bold">PIDB Kanban</span>
 			<span class="text-xs">@prisma-idb/idb-client-generator</span>
 		</Button>
@@ -91,7 +92,7 @@
 				<Sidebar.Menu>
 					<Sidebar.MenuButton>
 						{#snippet child({ props })}
-							<a href="/readme" {...props}>
+							<a href="{base}/readme" {...props}>
 								<InfoIcon />
 								<span>README</span>
 							</a>
