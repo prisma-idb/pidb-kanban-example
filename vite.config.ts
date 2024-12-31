@@ -9,6 +9,10 @@ export default defineConfig({
 	plugins: [
 		sveltekit(),
 		SvelteKitPWA({
+			kit: {
+				trailingSlash: 'always',
+				includeVersionFile: true
+			},
 			strategies: 'injectManifest',
 			srcDir: 'src',
 			filename: 'service-worker.ts',
@@ -16,7 +20,13 @@ export default defineConfig({
 				enabled: true,
 				type: 'module'
 			},
-			manifestFilename: 'manifest.webmanifest'
+			manifestFilename: 'manifest.webmanifest',
+			injectManifest: {
+				globPatterns: [
+					'client/**/*.{js,css,ico,png,svg,webp,webmanifest,ttf,woff,woff2}',
+					'prerendered/**/*.{html,json}'
+				]
+			}
 		})
 	]
 });
