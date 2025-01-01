@@ -20,13 +20,7 @@ export default defineConfig({
 				enabled: true,
 				type: 'module'
 			},
-			manifestFilename: 'manifest.webmanifest',
-			injectManifest: {
-				globPatterns: [
-					'client/**/*.{js,css,ico,png,svg,webp,webmanifest,ttf,woff,woff2}',
-					'prerendered/**/*.{html,json}'
-				]
-			}
+			manifestFilename: 'manifest.webmanifest'
 		})
 	]
 });
